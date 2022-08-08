@@ -39,12 +39,13 @@
   let canvasZh, canvasEn;
 
   const download = () => {
+    const nameArr = ['en', 'zh'];
     [canvasEn, canvasZh].forEach((v, i) => {
       const canvasUrl = v.getCanvas().toDataURL('image/png');
       console.log(canvasUrl, v.canvas);
       const createEl = document.createElement('a');
       createEl.href = canvasUrl;
-      createEl.download = `biweekly-${dateStr}-${i}.png`;
+      createEl.download = `biweekly-${dateStr}-${nameArr[i]}.png`;
       createEl.click();
       createEl.remove();
     });
