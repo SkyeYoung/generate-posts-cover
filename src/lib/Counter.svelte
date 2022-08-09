@@ -6,6 +6,7 @@
   const size = {
     width: 768,
     height: 407,
+    pixelRatio: 1,
   };
 
   $: dateStr = '2022.6.1-2022.6.15';
@@ -18,7 +19,7 @@
       imageEn.src = biweeklyEn;
       await new Promise<void>((resolve) => imageEn.addEventListener('load', () => resolve()));
     }
-    ctx.drawImage(imageEn, 0, 0, width * 2, height * 2, 0, 0, width, height);
+    ctx.drawImage(imageEn, 0, 0, width, height);
 
     ctx.font = '23px system-ui';
     ctx.fillStyle = '#510dae';
@@ -33,19 +34,19 @@
       imageZh.src = biweeklyZh;
       await new Promise<void>((resolve) => imageZh.addEventListener('load', () => resolve()));
     }
-    ctx.drawImage(imageZh, 0, 0, width * 2, height * 2, 0, 0, width, height);
+    ctx.drawImage(imageZh, 0, 0, width, height);
 
     ctx.font = '23px system-ui';
     ctx.fillStyle = '#510dae';
     ctx.fillText(dateStr, 427, 180);
   };
 
-  let canvasZh, canvasEn;
   const nameArr = ['en', 'zh'];
+  let canvasZh, canvasEn;
   const download = () => {
     [canvasEn, canvasZh].forEach((v, i) => {
-      const canvasUrl = v.getCanvas().toDataURL('image/png');
-      console.log(canvasUrl, v.canvas);
+      const canvas = v.getCanvas();
+      const canvasUrl = canvas.toDataURL('image/jpeg', 1);
       const createEl = document.createElement('a');
       createEl.href = canvasUrl;
       createEl.download = `biweekly-${dateStr}-${nameArr[i]}.png`;
