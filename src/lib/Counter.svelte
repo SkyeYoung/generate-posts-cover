@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Canvas, Layer } from 'svelte-canvas';
+  import { readable, get } from 'svelte/store';
   import biweeklyEn from '../assets/biweekly-en.png';
   import biweeklyZh from '../assets/biweekly-zh.png';
 
@@ -10,34 +11,35 @@
 
   $: dateStr = '2022.6.1-2022.6.15';
 
-  $: renderEn = async ({ context: ctx }) => {
+  // en cover
+  const imageEn = readable(null, (set) => {
     const image = new Image();
     image.src = biweeklyEn;
-    // wait image loaded
-    await new Promise<void>((resolve) => image.addEventListener('load', () => resolve()));
-
-    ctx.drawImage(image, 0, 0);
+    image.addEventListener('load', () => set(image));
+  });
+  $: renderEn = async ({ context: ctx, width, height }) => {
+    ctx.drawImage(get(imageEn), 0, 0, width * 2, height * 2, 0, 0, width, height);
 
     ctx.font = '23px system-ui';
     ctx.fillStyle = '#510dae';
     ctx.fillText(dateStr, 511, 340);
   };
 
-  $: renderZh = async ({ context: ctx }) => {
+  // zh cover
+  const imageZh = readable(null, (set) => {
     const image = new Image();
     image.src = biweeklyZh;
-    // wait image loaded
-    await new Promise<void>((resolve) => image.addEventListener('load', () => resolve()));
-
-    ctx.drawImage(image, 0, 0);
+    image.addEventListener('load', () => set(image));
+  });
+  $: renderZh = async ({ context: ctx, width, height }) => {
+    ctx.drawImage(get(imageZh), 0, 0, width * 2, height * 2, 0, 0, width, height);
 
     ctx.font = '23px system-ui';
     ctx.fillStyle = '#510dae';
-    ctx.fillText(dateStr, 429, 180);
+    ctx.fillText(dateStr, 427, 180);
   };
 
   let canvasZh, canvasEn;
-
   const download = () => {
     const nameArr = ['en', 'zh'];
     [canvasEn, canvasZh].forEach((v, i) => {
