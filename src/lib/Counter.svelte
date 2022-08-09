@@ -14,9 +14,9 @@
   let imageEn: HTMLImageElement = null;
   $: renderEn = async ({ context: ctx, width, height }) => {
     if (!imageEn) {
-      const image = new Image();
-      image.src = biweeklyEn;
-      await new Promise<void>((resolve) => image.addEventListener('load', () => resolve()));
+      imageEn = new Image();
+      imageEn.src = biweeklyEn;
+      await new Promise<void>((resolve) => imageEn.addEventListener('load', () => resolve()));
     }
     ctx.drawImage(imageEn, 0, 0, width * 2, height * 2, 0, 0, width, height);
 
@@ -29,9 +29,9 @@
   let imageZh: HTMLImageElement = null;
   $: renderZh = async ({ context: ctx, width, height }) => {
     if (!imageZh) {
-      const image = new Image();
-      image.src = biweeklyZh;
-      await new Promise<void>((resolve) => image.addEventListener('load', () => resolve()));
+      imageZh = new Image();
+      imageZh.src = biweeklyZh;
+      await new Promise<void>((resolve) => imageZh.addEventListener('load', () => resolve()));
     }
     ctx.drawImage(imageZh, 0, 0, width * 2, height * 2, 0, 0, width, height);
 
